@@ -1,17 +1,23 @@
-# flutter_mad
+# BioBond (with Flutter/Dart)
 
-Our first flutter project
+## Members
+- Sergio Pastor Mesas (bt0385) ([GitHub](https://github.com/bt0385))
+- Gabriel Gutiérrez Fuentes (bt0055) ([GitHub](https://github.com/gabgutf))
 
-## Getting Started
+## Links
+GitHub:
+- Repository: https://github.com/bt0385/FlutterProjectMAD
+- Releases: https://github.com/bt0385/FlutterProjectMAD/releases
 
-This project is a starting point for a Flutter application.
+Sharepoint:
+- Landing page: https://upm365.sharepoint.com/sites/MAD26GS/SitePages/Home.aspx
+- Tracking: https://upm365.sharepoint.com/sites/MAD26GS/SitePages/Tracking.aspx
 
-A few resources to get you started if this is your first Flutter project:
+## Description
+BioBond is an app that seeks to teach users (in a non-boring way) what the flora needs to live and the importance of keeping their habitats safe from harm. Customize your profile, complete missions, get points and compete in the leaderboard!!
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Screenshots of the App
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| ![App view](readme/LandingActivity.jpeg "Landing activity") | ![App view](readme/MainActivity.png "Main activity") | ![App view](readme/OpenStreetMapActivity.png "OpenStreetMaps activity") | ![App view](readme/ProfileActivity.jpeg "Profile activity") | ![App view](readme/RankingActivity.png "Third activity") |
+|:-----------------------------------------------------------:|:----------------------------------------------------:|:-----------------------------------------------------------------------:|:-----------------------------------------------------------:|:--------------------------------------------------------:|
+|                     *Landing Activity*                      |                   *Main Activity*                    |                        *OpenStreetMaps Activity*                        |                     *Profile Activity*                      |                    *Ranking Activity*                    |
