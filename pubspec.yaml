@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.6.0
   flutter_osm_plugin: ^1.4.3
+  logger: ^2.7.0
+  toastification: ^3.2.0
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:
