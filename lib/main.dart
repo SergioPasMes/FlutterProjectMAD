@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/logger.dart';
+import 'package:flutter_mad/helpers/logger.dart';
 import 'package:flutter_mad/screens/landing_screen.dart';
 import 'package:flutter_mad/screens/register_screen.dart';
 import 'package:flutter_mad/screens/main_screen.dart';
@@ -8,9 +8,9 @@ import 'package:flutter_mad/screens/ranking_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  // ------------------------------- PARA BORRAR DATOS GUARDADOS Y EMPEZAR DE CERO -------------------------------
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.clear();
+  // ------------------------------- TO DELETE STORED DATA AND START FROM ZERO -------------------------------
+  //final prefs = await SharedPreferences.getInstance();
+  //await prefs.clear();
   runApp(MyApp());
 }
 
