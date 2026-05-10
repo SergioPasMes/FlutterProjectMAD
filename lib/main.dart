@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mad/helpers/logger.dart';
 import 'package:flutter_mad/screens/landing_screen.dart';
+import 'package:flutter_mad/screens/map_screen.dart';
 import 'package:flutter_mad/screens/register_screen.dart';
 import 'package:flutter_mad/screens/main_screen.dart';
 import 'package:flutter_mad/screens/profile_editor_screen.dart';
@@ -38,6 +39,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int selectedIndex = 0;
   final List<Widget> screens = [
     MainScreen(),
+    MapScreen(),
     ProfileEditorScreen(),
     RankingScreen(),
   ];
@@ -48,9 +50,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       body: screens[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile Editor'),
-          BottomNavigationBarItem(icon: Icon(Icons.leaderboard), label: 'Ranking'),
+          BottomNavigationBarItem(icon: Icon(Icons.home, color: Color.fromARGB(255, 0, 0, 0),), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.map, color: Color.fromARGB(255, 0, 0, 0),), label: 'Map'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle, color: Color.fromARGB(255, 0, 0, 0),), label: 'Profile Editor'),
+          BottomNavigationBarItem(icon: Icon(Icons.leaderboard, color: Color.fromARGB(255, 0, 0, 0),), label: 'Ranking'),
         ],
         currentIndex: selectedIndex,
         onTap: (index) => setState(() {

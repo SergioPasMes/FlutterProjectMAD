@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
 class MissionManager {
@@ -31,8 +32,7 @@ class MissionManager {
       return Future.error('Location permissions are permanently denied.');
     }
 
-    Position initialPosition = await Geolocator.getCurrentPosition();
-    _generateNewTarget(initialPosition.latitude, initialPosition.longitude);
+    _generateNewTarget();
 
     final locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
@@ -47,7 +47,7 @@ class MissionManager {
   }
 
   // Check if the user is within the completion radius of the mission
-  void _checkDistance(Position currentPosition) {
+  Future<void> _checkDistance(Position currentPosition) async {
     if (targetLatitude == null || targetLongitude == null) return;
 
     double distance = Geolocator.distanceBetween(
@@ -62,19 +62,35 @@ class MissionManager {
         onMissionCompleted!();
       }
 
-      _generateNewTarget(currentPosition.latitude, currentPosition.longitude);
+      // When mission completes, we clear the stored mission coordinates
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('missionLat');
+      await prefs.remove('missionLong');
+
+      await _generateNewTarget();
     }
   }
 
   // Generate new mission based on user's current location
-  void _generateNewTarget(double currentLat, double currentLng) {
+  Future<void> _generateNewTarget() async {
     final random = Random();
 
     double latOffset = (random.nextDouble() - 0.5) * 0.01;
     double lngOffset = (random.nextDouble() - 0.5) * 0.01;
 
-    targetLatitude = currentLat + latOffset;
-    targetLongitude = currentLng + lngOffset;
+    Position initialPosition = await Geolocator.getCurrentPosition();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('currentLat', initialPosition.latitude);
+    await prefs.setDouble('currentLong', initialPosition.longitude);
+
+    // We only check one of them because if one is null, the other will be null too
+    double? currentMissionLat = prefs.getDouble('missionLat');
+    if(currentMissionLat == null) {
+      targetLatitude = initialPosition.latitude + latOffset;
+      targetLongitude = initialPosition.longitude + lngOffset;
+      await prefs.setDouble('missionLat', targetLatitude!);
+      await prefs.setDouble('missionLong', targetLongitude!);
+    }
 
     if (onTargetUpdated != null) {
       onTargetUpdated!(targetLatitude!, targetLongitude!);
