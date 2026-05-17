@@ -1,17 +1,26 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firebase_options.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/helpers/logger.dart';
+import 'package:flutter_mad/screens/login_screen.dart';
 import 'package:flutter_mad/screens/landing_screen.dart';
 import 'package:flutter_mad/screens/map_screen.dart';
-import 'package:flutter_mad/screens/register_screen.dart';
 import 'package:flutter_mad/screens/main_screen.dart';
 import 'package:flutter_mad/screens/profile_editor_screen.dart';
 import 'package:flutter_mad/screens/ranking_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   // ------------------------------- TO DELETE STORED DATA AND START FROM ZERO -------------------------------
-  //final prefs = await SharedPreferences.getInstance();
-  //await prefs.clear();
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -24,7 +33,18 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: LandingScreen(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.data != null) {
+              return LandingScreen(); // Usuario está logueado
+            }
+            return LoginScreen(); // Usuario no está logueado
+          }
+          return CircularProgressIndicator(); // Esperando conexión
+        },
+      ),
     );
   }
 }
