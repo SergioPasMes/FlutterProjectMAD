@@ -18,8 +18,8 @@ class _LandingScreenState extends State<LandingScreen> {
 
   void _checkAlias() async {
     final prefs = await SharedPreferences.getInstance();
-    // Si ya tiene alias, vamos a la app principal. Si no, a la de registro.
-    if (prefs.containsKey('alias') && prefs.containsKey('age')) {
+    /// If not registered, send the user to the register screen.
+    if (prefs.containsKey('auth_token')) {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainNavigationScreen()));
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
@@ -28,7 +28,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Mientras lee los datos, mostramos un círculo de carga
+    /// While reading data, we show loading indicator
     return Scaffold(
       body: Center(child: CircularProgressIndicator()),
     );
