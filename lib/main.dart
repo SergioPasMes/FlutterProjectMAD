@@ -13,10 +13,6 @@ import 'package:flutter_mad/screens/profile_editor_screen.dart';
 import 'package:flutter_mad/screens/ranking_screen.dart';
 
 void main() async {
-  // ------------------------------- TO DELETE STORED DATA AND START FROM ZERO -------------------------------
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.clear();
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
