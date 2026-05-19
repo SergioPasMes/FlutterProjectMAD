@@ -29,7 +29,7 @@ class ApiManager {
 
       if (response.statusCode == 201) {
         final Map<String, dynamic> responseData = jsonDecode(response.body);
-        final String? token = responseData['token'];
+        final String? token = responseData['user_token'];
 
         if (token == null) {
           throw Exception('No token was delivered from the API.');

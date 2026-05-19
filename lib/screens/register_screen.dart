@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mad/helpers/apiManager.dart';
 import 'package:flutter_mad/helpers/logger.dart';
 import 'package:logger/logger.dart';
+import 'package:path/path.dart' as path;
 import 'package:toastification/toastification.dart';
 
 import '../main.dart';
@@ -148,7 +149,7 @@ class _RegisterScreen extends State<RegisterScreen> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await _apiManager.registerUser(alias: _aliasController.text, age: int.parse(_ageController.text), profilePicture: _profilePicture);
+                  await _apiManager.registerUser(alias: _aliasController.text, age: int.parse(_ageController.text), profilePicture: path.basename(_profilePicture));
 
                   toastification.show(
                     context: context,
