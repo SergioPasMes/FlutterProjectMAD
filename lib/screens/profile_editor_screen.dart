@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_mad/helpers/apiManager.dart';
+import 'package:flutter_mad/helpers/databaseManager.dart';
+import 'package:flutter_mad/widgets/profile_widget.dart';
+import 'package:path/path.dart' as path;
 
 class ProfileEditorScreen extends StatefulWidget {
   @override
@@ -8,9 +11,14 @@ class ProfileEditorScreen extends StatefulWidget {
 }
 
 class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
-  final _aliasController = TextEditingController();
-  final _ageController = TextEditingController();
+  String _aliasController = '';
+  int _ageController = 16;
+  String profile_picture = 'assets/profile_pictures/pfp_0.png';
+
+  ApiManager apiManager = ApiManager();
+  DatabaseManager databaseManager = DatabaseManager();
   String? _ageError;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -18,49 +26,56 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
     _loadUserData();
   }
 
-  // Rellenamos los TextField con los datos guardados
   void _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _aliasController.text = prefs.getString('alias') ?? '';
-      _ageController.text = prefs.getInt('age')?.toString() ?? '';
-    });
+    try {
+      final token = await apiManager.getToken();
+      final aliasData = await databaseManager.getFromDatabase(token, 'alias');
+      final ageData = await databaseManager.getFromDatabase(token, 'age');
+      final pfpData = await databaseManager.getFromDatabase(token, 'profile_picture');
+      final pfpValue = pfpData?.toString() ?? 'pfp_0.png';
+
+      if (!mounted) return;
+
+      setState(() {
+        _aliasController = aliasData?.toString() ?? '';
+        _ageController = int.tryParse(ageData?.toString() ?? '16') ?? 16;
+        profile_picture = 'assets/profile_pictures/$pfpValue';
+
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Error cargando perfil: $e");
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile Editor')),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+      appBar: AppBar(title: const Text('Profile Editor')),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Edit your profile information.', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 20),
-            TextField(
-              controller: _aliasController,
-              decoration: InputDecoration(
-                labelText: 'Alias',
-                border: OutlineInputBorder(),
-              ),
+            const Text('Edit your profile information.', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
+            ProfileWidget(
+                alias: _aliasController,
+                age: _ageController,
+                profile_picture: profile_picture,
+                onAliasChange: (alias) { _aliasController = alias; },
+                onAgeChange: (age) { _ageController = age; },
+                onPictureChange: (pfp) { profile_picture = pfp; }
             ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _ageController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: InputDecoration(
-                labelText: 'Age',
-                border: OutlineInputBorder(),
-                errorText: _ageError,
-              ),
-              onChanged: (value) => _validateAge(value),
-            ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _saveData,
-              child: Text('Save Changes'),
+              child: const Text('Save Changes'),
             ),
           ],
         ),
@@ -68,33 +83,29 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
     );
   }
 
-  void _validateAge(String value) {
-    if (value.isEmpty) {
-      setState(() => _ageError = null);
-      return;
-    }
-    final age = int.tryParse(value);
-    if (age == null || age < 16 || age > 100) {
-      setState(() => _ageError = 'Age must be between 16 and 100');
-    } else {
-      setState(() => _ageError = null);
-    }
-  }
-
   void _saveData() async {
-    final age = int.tryParse(_ageController.text);
+    final token = await apiManager.getToken();
 
-    if (age == null || age < 16 || age > 100) {
-      setState(() => _ageError = 'Please enter a valid age (16-100)');
+    if (_ageController < 16 || _ageController > 100) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid age (16-100)')),
+      );
       return;
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('alias', _aliasController.text);
-    await prefs.setInt('age', age);
+    Map<String, dynamic> updatedData = {
+      'alias': _aliasController,
+      'age': _ageController,
+      'profile_picture': path.basename(profile_picture)
+    };
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Profile updated successfully!')),
-    );
+    await databaseManager.putUser(token, updatedData);
+    await apiManager.updateUser(updatedFields: updatedData);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully!')),
+      );
+    }
   }
 }
