@@ -3,8 +3,8 @@ import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/helpers/apiManager.dart';
-import 'package:flutter_mad/widgets/profile_widget.dart';
+import 'package:BioBond/helpers/apiManager.dart';
+import 'package:BioBond/widgets/profile_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:toastification/toastification.dart';
 

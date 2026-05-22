@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/helpers/apiManager.dart';
-import 'package:flutter_mad/helpers/databaseManager.dart';
-import 'package:flutter_mad/widgets/profile_widget.dart';
+import 'package:BioBond/helpers/apiManager.dart';
+import 'package:BioBond/helpers/databaseManager.dart';
+import 'package:BioBond/widgets/profile_widget.dart';
 import 'package:path/path.dart' as path;
 
 class ProfileEditorScreen extends StatefulWidget {

@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/screens/login_screen.dart';
-import 'package:flutter_mad/screens/landing_screen.dart';
-import 'package:flutter_mad/screens/map_screen.dart';
-import 'package:flutter_mad/screens/main_screen.dart';
-import 'package:flutter_mad/screens/profile_editor_screen.dart';
-import 'package:flutter_mad/screens/ranking_screen.dart';
+import 'package:BioBond/screens/login_screen.dart';
+import 'package:BioBond/screens/landing_screen.dart';
+import 'package:BioBond/screens/map_screen.dart';
+import 'package:BioBond/screens/main_screen.dart';
+import 'package:BioBond/screens/profile_editor_screen.dart';
+import 'package:BioBond/screens/ranking_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

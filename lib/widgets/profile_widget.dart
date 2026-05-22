@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mad/helpers/apiManager.dart';
+import 'package:BioBond/helpers/apiManager.dart';
 
 class ProfileWidget extends StatefulWidget {
   final String? alias;
@@ -20,7 +20,6 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidget extends State<ProfileWidget> {
   late final _aliasController = TextEditingController(text: widget.alias);
   late final _ageController = TextEditingController(text: widget.age.toString());
-  final _apiManager = ApiManager();
   late String _profilePicture = widget.profile_picture ?? 'pfp_0.png';
   final List<String> avatars = [
     'assets/profile_pictures/pfp_0.png',

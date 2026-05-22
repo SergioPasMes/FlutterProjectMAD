@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/helpers/apiManager.dart';
+import 'package:BioBond/helpers/apiManager.dart';
 
 class RankingScreen extends StatelessWidget {
   final apiManager = ApiManager();

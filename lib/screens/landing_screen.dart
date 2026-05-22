@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/screens/register_screen.dart';
+import 'package:BioBond/screens/register_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 

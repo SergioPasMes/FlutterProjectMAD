@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mad/helpers/apiManager.dart';
-import 'package:flutter_mad/helpers/databaseManager.dart';
-import 'package:flutter_mad/helpers/missionManager.dart';
+import 'package:BioBond/helpers/apiManager.dart';
+import 'package:BioBond/helpers/databaseManager.dart';
+import 'package:BioBond/helpers/missionManager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
