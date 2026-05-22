@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mad/helpers/apiManager.dart';
+import 'package:flutter_mad/helpers/databaseManager.dart';
 import 'package:flutter_mad/helpers/missionManager.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final MissionManager _missionManager = MissionManager();
   final ApiManager apiManager = ApiManager();
+  final DatabaseManager databaseManager = DatabaseManager();
+  String? plantPicture;
 
   // Text for the coordinates, starts with a loading message
   String locationText = "Getting mission...";
@@ -24,22 +27,32 @@ class _MainScreenState extends State<MainScreen> {
 
     _checkAndShowPlantDialog();
 
-    _missionManager.onTargetUpdated = (lat, lng) {
+    _missionManager.onTargetUpdated = (targetName) {
       if (mounted) {
         setState(() {
           locationText =
-          "Go to ${lat.toStringAsFixed(5)}, ${lng.toStringAsFixed(5)}";
+          "Go to $targetName";
         });
       }
     };
 
-    _missionManager.onMissionCompleted = () {
+    _missionManager.onMissionCompleted = () async {
       if (mounted) {
-        setState(() {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Mission Completed!')),
-          );
-        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Mission Completed!')),
+        );
+      }
+
+      try {
+        final token = await apiManager.getToken();
+        final scoreData = await databaseManager.getFromDatabase(token, 'score');
+        final int oldScore = int.tryParse(scoreData?.toString() ?? '0') ?? 0;
+        final Map<String, dynamic> updatedData = {'score': oldScore + 100};
+        await apiManager.updateUser(updatedFields: updatedData);
+        await databaseManager.putUser(token, updatedData);
+
+      } catch (e) {
+        print("Error while updating score: $e");
       }
     };
 
@@ -90,8 +103,15 @@ class _MainScreenState extends State<MainScreen> {
                 children: plants.map((plant) {
                   return GestureDetector(
                     onTap: () async {
-                      /// Save current date in SharedPreferences
+                      /// Save current decision in SharedPreferences
                       await prefs.setString('lastPlantDate', DateTime.now().toIso8601String());
+                      await prefs.setString('currentNecessity', plant['main_necessity']);
+                      await prefs.setString('plantPicture', plant['picture']);
+                      if (mounted) {
+                        setState(() {
+                          plantPicture = plant['picture'];
+                        });
+                      }
                       Navigator.pop(context);
                     },
                     child: Column(
@@ -149,6 +169,14 @@ class _MainScreenState extends State<MainScreen> {
               locationText,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 60),
+            if (plantPicture != null)
+              Image.network(
+                plantPicture!,
+                width: 150,
+                height: 150,
+                fit: BoxFit.cover,
+              )
           ],
         ),
       ),
@@ -157,16 +185,16 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> _loadInitialText() async {
     final prefs = await SharedPreferences.getInstance();
-    double? missLat = prefs.getDouble('missionLat');
-    double? missLng = prefs.getDouble('missionLong');
+    String? targetName = prefs.getString('missionName');
+    String? savedPicture = prefs.getString('plantPicture');
 
-    if (missLat != null && missLng != null) {
-      if (mounted) {
-        setState(() {
-          locationText =
-          "Go to ${missLat.toStringAsFixed(5)}, ${missLng.toStringAsFixed(5)}";
-        });
-      }
+    if (mounted) {
+      setState(() {
+        if (targetName != null) {
+          locationText = "Go to $targetName";
+        }
+        plantPicture = savedPicture;
+      });
     }
   }
 }
