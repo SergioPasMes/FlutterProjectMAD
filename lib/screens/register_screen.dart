@@ -1,14 +1,10 @@
 import 'dart:core' as parse;
 import 'dart:core';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mad/helpers/apiManager.dart';
-import 'package:flutter_mad/helpers/logger.dart';
 import 'package:flutter_mad/widgets/profile_widget.dart';
-import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
 import 'package:toastification/toastification.dart';
 

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toastification/toastification.dart';
 
 class MissionManager {
   StreamSubscription<Position>? _positionStreamSubscription;

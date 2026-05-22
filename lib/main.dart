@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mad/screens/login_screen.dart';
 import 'package:flutter_mad/screens/landing_screen.dart';
@@ -34,11 +32,11 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.data != null) {
-              return LandingScreen(); // Usuario está logueado
+              return LandingScreen(); // User is logged in
             }
-            return LoginScreen(); // Usuario no está logueado
+            return LoginScreen(); // Usuario is not logged in
           }
-          return CircularProgressIndicator(); // Esperando conexión
+          return CircularProgressIndicator();
         },
       ),
     );

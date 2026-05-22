@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mad/helpers/apiManager.dart';
 import 'package:flutter_mad/helpers/databaseManager.dart';
 import 'package:flutter_mad/widgets/profile_widget.dart';
@@ -17,7 +16,6 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
 
   ApiManager apiManager = ApiManager();
   DatabaseManager databaseManager = DatabaseManager();
-  String? _ageError;
   bool _isLoading = true;
 
   @override

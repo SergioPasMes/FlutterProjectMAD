@@ -3,9 +3,6 @@ import 'package:flutter_mad/helpers/databaseManager.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-
 class ApiManager {
   final String baseUrl = 'https://mad.gabrielg.es/api/v1/';
   final DatabaseManager databaseManager = DatabaseManager();

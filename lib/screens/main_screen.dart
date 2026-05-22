@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mad/helpers/apiManager.dart';
 import 'package:flutter_mad/helpers/databaseManager.dart';
 import 'package:flutter_mad/helpers/missionManager.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toastification/toastification.dart'; // Asegúrate de que el nombre del archivo coincida
+import 'package:toastification/toastification.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -37,14 +36,42 @@ class _MainScreenState extends State<MainScreen> {
     };
 
     _missionManager.onMissionCompleted = () async {
+      final token = await apiManager.getToken();
       if (mounted) {
+        final TextEditingController _reviewController = TextEditingController();
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Mission Completed!')),
+        );
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Please, rate this mission for feedback'),
+              content: TextField(
+                controller: _reviewController,
+                maxLength: 100,
+                decoration: const InputDecoration(
+                  hintText: "Your feedback...",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    String review = _reviewController.text;
+                    databaseManager.putUser(token, {'lastReview': review});
+
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Send'),
+                ),
+              ],
+            )
         );
       }
 
       try {
-        final token = await apiManager.getToken();
         final scoreData = await databaseManager.getFromDatabase(token, 'score');
         final int oldScore = int.tryParse(scoreData?.toString() ?? '0') ?? 0;
         final Map<String, dynamic> updatedData = {'score': oldScore + 100};

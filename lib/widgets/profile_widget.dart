@@ -1,17 +1,7 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mad/helpers/apiManager.dart';
-import 'package:flutter_mad/helpers/logger.dart';
-import 'package:logger/logger.dart';
-import 'package:path/path.dart' as path;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toastification/toastification.dart';
-
-import '../main.dart';
 
 class ProfileWidget extends StatefulWidget {
   final String? alias;
