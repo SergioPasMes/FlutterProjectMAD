@@ -79,25 +79,25 @@ class ApiManager {
     }
   }
 
-  Future<List<dynamic>> getPlants() async {
+  Future<List<dynamic>> getData(String endpoint) async {
     final String token = await getToken();
     try {
       final response = await http.get(
-      Uri.parse('${baseUrl}plant'),
-      headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'User-Token': token
+        Uri.parse('$baseUrl$endpoint'),
+        headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'User-Token': token
       },
     );
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode}: ${response.body}');
       } else {
-        final List<dynamic> responsePlants = jsonDecode(response.body);
-        return responsePlants;
+        final List<dynamic> responseData = jsonDecode(response.body);
+        return responseData;
       }
 
     } catch (e) {
-      return Future.error('Failed when obtaining plants from API: $e');
+      return Future.error('Failed when obtaining data from API: $e');
     }
   }
 

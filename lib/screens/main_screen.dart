@@ -87,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
 
     if (shouldShowDialog) {
       try {
-        final List<dynamic> plants = await apiManager.getPlants();
+        final List<dynamic> plants = await apiManager.getData("plant");
 
         if (!mounted) return;
 
