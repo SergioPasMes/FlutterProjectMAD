@@ -11,6 +11,10 @@ import 'package:toastification/toastification.dart';
 import '../main.dart';
 
 class RegisterScreen extends StatefulWidget {
+  final VoidCallback? onRegisterSuccess;
+
+  RegisterScreen({Key? key, this.onRegisterSuccess}) : super(key: key);
+
   @override
   _RegisterScreen createState() => _RegisterScreen();
 }
@@ -43,25 +47,33 @@ class _RegisterScreen extends State<RegisterScreen> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await _apiManager.registerUser(alias: _aliasController, age: _ageController, profilePicture: path.basename(profile_picture));
-
-                  toastification.show(
-                    context: context,
-                    title: Text('User created successfully'),
-                    autoCloseDuration: const Duration(seconds: 5),
+                  await _apiManager.registerUser(
+                      alias: _aliasController,
+                      age: _ageController,
+                      profilePicture: path.basename(profile_picture)
                   );
+
+                  if (mounted) {
+                    toastification.show(
+                      context: context,
+                      title: Text('User created successfully'),
+                      autoCloseDuration: const Duration(seconds: 5),
+                    );
+                  }
+                  if (widget.onRegisterSuccess != null) {
+                    widget.onRegisterSuccess!();
+                  }
+
                 } catch (error) {
-                  toastification.show(
-                    context: context,
-                    type: ToastificationType.error,
-                    title: Text(error.toString()),
-                    autoCloseDuration: const Duration(seconds: 5),
-                  );
-
+                  if (mounted) {
+                    toastification.show(
+                      context: context,
+                      type: ToastificationType.error,
+                      title: Text(error.toString()),
+                      autoCloseDuration: const Duration(seconds: 5),
+                    );
+                  }
                 }
-
-                Route route = MaterialPageRoute(builder: (context) => MainNavigationScreen());
-                Navigator.pushReplacement(context, route);
               },
               child: Text('Confirm'),
             ),

@@ -1,4 +1,4 @@
-
+import 'package:BioBond/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:BioBond/screens/register_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +10,8 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  Widget? _targetScreen;
+
   @override
   void initState() {
     super.initState();
@@ -18,17 +20,26 @@ class _LandingScreenState extends State<LandingScreen> {
 
   void _checkAlias() async {
     final prefs = await SharedPreferences.getInstance();
-    /// If not registered, send the user to the register screen.
     if (prefs.containsKey('auth_token')) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainNavigationScreen()));
+      setState(() {
+        _targetScreen = MainNavigationScreen();
+      });
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+      setState(() {
+        _targetScreen = RegisterScreen(
+          onRegisterSuccess: () {
+            _checkAlias();
+          },
+        );
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    /// While reading data, we show loading indicator
+    if (_targetScreen != null) {
+      return _targetScreen!;
+    }
     return Scaffold(
       body: Center(child: CircularProgressIndicator()),
     );

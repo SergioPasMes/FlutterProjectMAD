@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:BioBond/helpers/apiManager.dart';
 import 'package:BioBond/helpers/databaseManager.dart';
 import 'package:BioBond/helpers/missionManager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
+
+import 'login_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -203,7 +206,11 @@ class _MainScreenState extends State<MainScreen> {
                 width: 150,
                 height: 150,
                 fit: BoxFit.cover,
-              )
+              ),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: () {
+              _logout();
+            }, child: const Text("Logout"))
           ],
         ),
       ),
@@ -223,5 +230,9 @@ class _MainScreenState extends State<MainScreen> {
         plantPicture = savedPicture;
       });
     }
+  }
+
+  Future<void> _logout() async {
+    await FirebaseAuth.instance.signOut();
   }
 }
