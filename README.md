@@ -17,7 +17,7 @@ Sharepoint:
 BioBond is an app that seeks to teach users (in a non-boring way) what the flora needs to live and the importance of keeping their habitats safe from harm. Customize your profile, complete missions, get points and compete in the leaderboard!!
 
 ## Screenshots of the App
-|*Login Screen*| ![App view](readme/RegisterScreen.png "Register Screen") |*Register Screen*| ![App view](readme/RegisterScreen.png "Register Screen") |*Main Screen*| ![App view](readme/MainScreen.png "Main Screen") |*OpenStreetMaps Screen*| ![App view](readme/OSMScreen.png "OpenStreetMaps Screen") |*Profile Editor Screen*| ![App view](readme/ProfileScreen.png "Profile Screen") |*Ranking Screen*| ![App view](readme/RankingScreen.png "Ranking Screen")
+|*Login Screen*| ![App view](readme/LoginScreen.png "Login Screen") |*Register Screen*| ![App view](readme/RegisterScreen.png "Register Screen") |*Main Screen*| ![App view](readme/MainScreen.png "Main Screen") |*OpenStreetMaps Screen*| ![App view](readme/OSMScreen.png "OpenStreetMaps Screen") |*Profile Editor Screen*| ![App view](readme/ProfileScreen.png "Profile Screen") |*Ranking Screen*| ![App view](readme/RankingScreen.png "Ranking Screen")
 
 ## Demo Video
 <INSERT VIDEO HERE>
