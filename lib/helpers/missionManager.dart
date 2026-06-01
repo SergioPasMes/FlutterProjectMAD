@@ -61,8 +61,8 @@ class MissionManager {
     );
 
     _positionStreamSubscription = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-          (Position currentPosition) {
-        _checkDistance(currentPosition, currentNeccesity);
+          (Position currentPosition) async {
+            await _checkDistance(currentPosition, currentNeccesity);
       },
     );
   }
