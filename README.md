@@ -20,7 +20,7 @@ BioBond is an app that seeks to teach users (in a non-boring way) what the flora
 ![App view](readme/LoginScreen.png "Login Screen") ![App view](readme/RegisterScreen.png "Register Screen") ![App view](readme/MainScreen.png "Main Screen")  ![App view](readme/OSMScreen.png "OpenStreetMaps Screen") ![App view](readme/ProfileScreen.png "Profile Screen") ![App view](readme/RankingScreen.png "Ranking Screen")
 
 ## Demo Video
-<INSERT VIDEO HERE>
+[Click here](https://upm365.sharepoint.com/:v:/s/MAD26GS/IQAYRyyy3-MgRYuZb29RK8ilAeFQm4fp-tBbftgPOLaEBZE?e=ImzlrC)
 
 ## Features
 - ## FUNCTIONAL
